@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # or the branch you want to trigger deployment on
+      - main  # This can be your default branch
 
 jobs:
   deploy:
@@ -18,5 +18,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}   # Use the default GitHub token
-          publish_dir: .  # Change this if your HTML file is in a subdirectory
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token
+          publish_dir: .  # Make sure this points to your HTML file's location
+
