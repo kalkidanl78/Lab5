@@ -3,25 +3,24 @@ name: Deploy Lab 5
 on:
   push:
     branches:
-      - main  # Runs on every push to the 'main' branch
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Runs on the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2  # Checks out the repository code
+      uses: actions/checkout@v2
 
     - name: Setup FTP credentials
       run: |
-        echo "FTP_USERNAME=${{ secrets.ftp_username }}" >> $GITHUB_ENV  # Use the FTP username from secrets
-        echo "FTP_PASSWORD=${{ secrets.ftp_password }}" >> $GITHUB_ENV  # Use the FTP password from secrets
+        echo "FTP_USERNAME=${{ secrets.ftp_username }}" >> $GITHUB_ENV
+        echo "FTP_PASSWORD=${{ secrets.ftp_password }}" >> $GITHUB_ENV
 
     - name: Install FTP Client
-      run: sudo apt-get install lftp  # Installs the lftp client
+      run: sudo apt-get install lftp
 
-    - name: Deploy to FTP
+    - name: Deploy to UMBC FTP Server
       run: |
-        lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD ftp://ftp.mywebsite.com  # Replace with your FTP server address
-
+        lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD sftp://gl.umbc.edu:22
