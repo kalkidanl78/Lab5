@@ -23,4 +23,8 @@ jobs:
 
     - name: Deploy to UMBC FTP Server
       run: |
+        # Disable host key verification
+        mkdir -p ~/.ssh
+        touch ~/.ssh/known_hosts
+        ssh-keyscan gl.umbc.edu >> ~/.ssh/known_hosts
         lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD sftp://gl.umbc.edu:22
