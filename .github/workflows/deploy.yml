@@ -28,6 +28,5 @@ jobs:
         touch ~/.ssh/known_hosts
         ssh-keyscan gl.umbc.edu >> ~/.ssh/known_hosts
 
-        # Use the explicit username in the URL for SFTP
-        lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD sftp://$FTP_USERNAME@gl.umbc.edu:22
-
+        # Use the actual username and password for FTP login
+        lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD sftp://gl.umbc.edu:22
