@@ -1,4 +1,4 @@
-name: Deploy Lab 5
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -8,25 +8,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup FTP credentials
-      run: |
-        echo "FTP_USERNAME=${{ secrets.ftp_username }}" >> $GITHUB_ENV
-        echo "FTP_PASSWORD=${{ secrets.ftp_password }}" >> $GITHUB_ENV
-
-    - name: Install FTP Client
-      run: sudo apt-get install lftp
-
-    - name: Deploy to UMBC FTP Server
-      run: |
-        # Disable host key verification
-        mkdir -p ~/.ssh
-        touch ~/.ssh/known_hosts
-        ssh-keyscan gl.umbc.edu >> ~/.ssh/known_hosts
-
-        # Use the actual username and password for FTP login
-        lftp -e "mirror -R ./ /public_html; quit" -u $FTP_USERNAME,$FTP_PASSWORD sftp://gl.umbc.edu:22
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
