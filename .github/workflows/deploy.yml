@@ -1,1 +1,27 @@
 .github/workflows/deploy.yml
+name: Deploy Lab 5
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup FTP credentials
+      run: |
+        echo "FTP_USERNAME=${{ secrets.ftp_username }}" >> $GITHUB_ENV
+        echo "FTP_PASSWORD=${{ secrets.ftp_password }}" >> $GITHUB_ENV
+
+    - name: Install FTP Client
+      run: sudo apt-get install lftp
+
+    - name: Deploy to FTP
+      run: |
+        lftp -e "mirror -R ./ /path/to/ftp/directory; quit" -u $FTP_USERNAME,$FTP_PASSWORD ftp://ftp.server.com
