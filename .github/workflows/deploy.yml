@@ -3,17 +3,20 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # or the branch you want to trigger deployment on
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          github_token: ${{ secrets.GITHUB_TOKEN }}   # Use the default GitHub token
+          publish_dir: .  # Change this if your HTML file is in a subdirectory
